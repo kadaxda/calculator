@@ -17,7 +17,7 @@ function operate(operator, a, b) {
     if(operator == divide && b == 0) {
         return "ERROR, you cant divide by 0!"
     }
-    return operator(Number(a),Number(b));
+    return Math.round(operator(Number(a),Number(b)) * 100) / 100;
 }
 
 // Select the diffrent buttons via QuerySelector
@@ -35,7 +35,6 @@ let numberTwo = "";
 let operator = "";
 let wordOperator = ""; // contains the operators in english (e.g. "add")
 let result = "";
-
 
 // Add the Event Listners
 // Numbers
@@ -75,8 +74,20 @@ for(let i = 0; i<buttons.length; i++) {
 // Operators
 for(let j = 0; j<operators.length; j++) {
     operators[j].addEventListener("click", function(e) {
+
+        // Now you can just calculate 2 numbers at once
+        if(display.textContent.includes(operator) && numberTwo != "") {
+            result = operate(wordOperator, numberOne, numberTwo);
+            console.log(numberOne, numberTwo, wordOperator)
+            display.textContent = result;
+            numberOne = result;
+            numberTwo = "";
+            console.log(result);   
+        }
+
         display.textContent += " " + e.target.value + " ";
         operator = e.target.value;
+
         // Fill in wordoperator
         if(operator == "+") {
             wordOperator = add;     
@@ -87,8 +98,8 @@ for(let j = 0; j<operators.length; j++) {
         } else if (operator == "*"){
             wordOperator = multiply;       
         }
-
-        console.log("operator: " + operator);
+  
+        console.log("operator1: " + wordOperator);
     })
 }
 
